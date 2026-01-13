@@ -1,10 +1,10 @@
 Listado de alumnos del curso de Estructuras de Datos
 
 1. Ernesto Cuadros-Vargas
-2.
+2. 
 3.
 4.
-5.
+5. Salazar Zapata, Alvaro Matias
 6.
 7.
 8.
