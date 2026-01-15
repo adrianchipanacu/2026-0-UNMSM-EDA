@@ -16,4 +16,4 @@ Listado de alumnos del curso de Estructuras de Datos
 14.
 15.
 16.
-
+13. Rojas Nazario,Nathan 
