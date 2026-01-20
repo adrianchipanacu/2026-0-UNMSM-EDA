@@ -18,7 +18,7 @@ void DemoPointers1(){
     int **pp = nullptr;
 
     p1 = &x;
-    pp = *p1;
+    pp = &p1;
 
     print("Before f1, x = ", x);
     f1(x);
@@ -37,7 +37,7 @@ void DemoPointers1(){
     print("After  f2, x = ", x);
 
 
-    x = 10; pi = &x;
+    x = 10; p1 = &x;
     // b = 20; //q = &b;
     print("Before f3, x = ", x);
     f3(&x);
@@ -46,12 +46,12 @@ void DemoPointers1(){
     f3(*pp);
     print("After  f3, x = ", x);
 
-    x = 10; pi = &x;
+    x = 10; p1 = &x;
     // b = 20; //q = &b;
     print("Before f4, x = ", x);
     // f4(&x);
-    f4(*pp);
+    f4(*pp); // p1 = nullptr
+    p1 = &x; // reset p1
     f4(p1);
     print("After  f4, x = ", x);
-    
 }
