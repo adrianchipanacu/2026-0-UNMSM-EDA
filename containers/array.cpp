@@ -46,4 +46,13 @@ void DemoArray() {
     cout << arr2 <<endl;
     arr2.Foreach(&Suma, "Enero");
     cout << arr2 <<endl;
+
+    int x = Test(5, 3, 2);
+    cout << x << endl;
+    auto r = Test(1, 2, 3.4, 4, 5, 6, 7);
+    cout << r << endl;
+
+    auto str = Test(string("Hola"), string("FC"), string("UNMSM") );
+    cout << str << endl;
 }
+
