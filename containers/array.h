@@ -11,7 +11,6 @@ template <typename _T>
 struct Trait1
 {
     using T = _T;
-    using CompareFunc = bool (*)(const T &, const T &);
 };
 
 template <typename Container>
@@ -47,7 +46,6 @@ class ArrayBackwardIterator : public GeneralIterator<Container>
 template <typename Traits>
 class CArray {
     using value_type  = typename Traits::T;
-    using CompareFunc = typename Traits::CompareFunc;
     using  forward_iterator  = ArrayForwardIterator < CArray<Traits> >;
     friend forward_iterator;
     using  backward_iterator = ArrayBackwardIterator< CArray<Traits> >;
@@ -71,11 +69,13 @@ class CArray {
           m_ref   = another.GetRef();
           return *this;
         }
-        bool operator==(const Node &another)
+        bool operator==(const Node &another) const
         { return m_value == another.GetValue();   }
-        bool operator<(const Node &another)
+        bool operator<(const Node &another) const
         { return m_value < another.GetValue();   }
     };
+    //using  CompareFunc = Traits::CompareFunc
+    using  CompareFunc = bool (*)(const Node &, const Node &);
   private:
     Size m_capacity = 0, m_last = 0;
     Node *m_data = nullptr;
@@ -111,7 +111,14 @@ class CArray {
     auto FirstThat(ObjFunc of, Args... args){
         return ::FirstThat(*this, of, args...);
     }
-    friend ostream &operator<<(ostream &os, CArray<Traits> &arr);
+    friend ostream &operator<<(ostream &os, CArray<Traits> &arr){
+        os << "CArray: size = " << arr.getSize() << endl;
+        os << "[";
+        for (auto i = 0; i < arr.getSize(); ++i)
+          os << "(" << arr.m_data[i].GetValue() << ":" << arr.m_data[i].GetRef() << "),";
+        os << "]" << endl;
+        return os;
+    }
 };
 
 template <typename Traits>
@@ -155,18 +162,18 @@ void CArray<Traits>::resize(Size delta) {
 
 template <typename Traits>
 void CArray<Traits>::sort( CompareFunc pComp ){
-    BurbujaRecursivo(m_data, m_last, pComp);
+    BurbujaRecursivo(m_data, m_last+1, pComp);
 }
 
-template <typename Traits>
-ostream &operator<<(ostream &os, CArray<Traits> &arr) {
-  os << "CArray: size = " << arr.getSize() << endl;
-  os << "[";
-  for (auto i = 0; i < arr.getSize(); ++i)
-    os << "(" << arr.m_data[i].GetValue() << ":" << arr.m_data[i].GetRef() << "),";
-  os << "]" << endl;
-  return os;
-}
+// template <typename Traits>
+// ostream &operator<<(ostream &os, CArray<Traits> &arr) {
+//   os << "CArray: size = " << arr.getSize() << endl;
+//   os << "[";
+//   for (auto i = 0; i < arr.getSize(); ++i)
+//     os << "(" << arr.m_data[i].GetValue() << ":" << arr.m_data[i].GetRef() << "),";
+//   os << "]" << endl;
+//   return os;
+// }
 
 void DemoArray();
 
