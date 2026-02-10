@@ -211,8 +211,7 @@ private:
         return os;
     }
 
-    template <typename Traits>
-    friend istream &operator>>(istream &is, CLinkedList<Traits> &container) {
+    friend istream &operator>>(istream &is, CDoubleLinkedList<Traits> &container) {
         typename Traits::value_type val;
         ref_type ref;
         char letter;

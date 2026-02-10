@@ -168,7 +168,6 @@ private:
     }
     // TODO: Persistencia (read)
  
-    template <typename Traits>
     friend istream &operator>>(istream &is, CLinkedList<Traits> &container) {
         typename Traits::value_type val;
         ref_type ref;
