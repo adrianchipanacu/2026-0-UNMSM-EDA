@@ -36,10 +36,7 @@ struct CStack {
 
 public:
     // Constructor normal
-    CStack() {
-        SRoot = nullptr;
-        n_Elements = 0;
-    }
+    CStack() {}
 
     //Copy Constructor
     CStack( const CStack<T> &another ) {
