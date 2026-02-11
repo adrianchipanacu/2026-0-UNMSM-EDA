@@ -31,7 +31,7 @@ struct CStack {
     using Node = CNode<T>;
 
     mutable mutex mtx;
-    Node *SRoot = nullptr;
+    Node *SLast = nullptr;
     size_t n_Elements = 0;
 
 public:
@@ -42,12 +42,12 @@ public:
     CStack( const CStack<T> &another ) {
         lock_guard<mutex> lock(another.mtx); 
 
-        Node *iter = another.SRoot, *iterThis;
+        Node *iter = another.SLast, *iterThis;
         for (size_t n = 0; n < another.n_Elements; ++n) {
             this->push(0, 0);
         }
-        iter = another.SRoot; 
-        iterThis = SRoot;
+        iter = another.SLast; 
+        iterThis = SLast;
         for (size_t n = 0; n < another.n_Elements; ++n) {
             iterThis->GetValueRef() = iter->GetValue();
             iterThis->GetRefRef() = iter->GetRef();
@@ -62,18 +62,18 @@ public:
     CStack( CStack<T> &&another) noexcept {
         lock_guard<mutex> lock(another.mtx);
 
-        SRoot = another.SRoot;
-        another.SRoot = nullptr;
+        SLast = another.SLast;
+        another.SLast = nullptr;
         n_Elements = another.n_Elements;
         another.n_Elements = 0;
     }
 
     virtual ~CStack() {
         Node *temp;
-        while(SRoot) {
-            temp = SRoot->GetNext();
-            delete SRoot;
-            SRoot = temp;
+        while(SLast) {
+            temp = SLast->GetNext();
+            delete SLast;
+            SLast = temp;
         }
     }
 
@@ -85,7 +85,7 @@ public:
 
     // Opertor <<, se imprime en forma de una pila de objetos
     friend ostream &operator<<(ostream &os, CStack<T> &container){
-        Node *iter = container.SRoot;
+        Node *iter = container.SLast;
 
         os << "CStack: size = " << container.getSize() << endl<<endl;
         os << "Cima de pila" << endl;
@@ -123,19 +123,19 @@ void CStack<T>::push(const T &value, ref_type ref) {
     lock_guard<mutex> lock(mtx);
 
     Node *lastNode = new Node(value, ref);
-    lastNode->GetNextRef() = SRoot;
-    SRoot = lastNode;
+    lastNode->GetNextRef() = SLast;
+    SLast = lastNode;
     ++n_Elements;
 }
 
 template <typename T>
 T CStack<T>::pop() {
     lock_guard<mutex> lock(mtx);
-    assert(SRoot != nullptr);
+    assert(SLast != nullptr);
 
-    T value = SRoot->GetValue();
-    Node *temp = SRoot;
-    SRoot = SRoot->GetNext();
+    T value = SLast->GetValue();
+    Node *temp = SLast;
+    SLast = SLast->GetNext();
     delete temp;
     --n_Elements;
 
